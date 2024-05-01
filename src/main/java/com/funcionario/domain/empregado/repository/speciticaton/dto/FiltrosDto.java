@@ -9,5 +9,6 @@ public class FiltrosDto {
     private String nome;
     private String cpf;
     private int cargo;
+    private Boolean status;
 }
 

@@ -4,14 +4,14 @@ import com.funcionario.domain.exception.EntidadeNaoEncontradaException;
 
 import java.io.Serial;
 
-public class EmpreadoNaoEncontradoException extends EntidadeNaoEncontradaException {
+public class EmpregadoNaoEncontradoException extends EntidadeNaoEncontradaException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public EmpreadoNaoEncontradoException(String message) {
+    public EmpregadoNaoEncontradoException(String message) {
         super(message);
     }
-    public EmpreadoNaoEncontradoException(Long empregadoId){
+    public EmpregadoNaoEncontradoException(Long empregadoId){
         this(String.format("Não existe um cadastro para o funcionario com o códico %d", empregadoId));
 
     }

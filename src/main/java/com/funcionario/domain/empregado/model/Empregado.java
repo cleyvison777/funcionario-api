@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Getter
@@ -21,6 +24,14 @@ public class Empregado {
     private int idade;
     private String cpf;
     private double salario;
+    private Boolean status;
+    @CreationTimestamp
+    @Column(name = "DATA_CADASTRO", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
+    @UpdateTimestamp
+    @Column(name = "CADASTRO_ATUALIZADO", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataAtualizado;
+
 
     @ManyToOne
     @JoinColumn(name = "id_cargo")
