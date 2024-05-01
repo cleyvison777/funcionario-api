@@ -21,6 +21,9 @@ public class EmpregadoSpecification {
             if (filtros.getCpf() != null && !filtros.getCpf().isEmpty()) {
                 predicates.add(criteriaBuilder.equal(root.get("cpf"), filtros.getCpf()));
             }
+            if (filtros.getStatus() != null) {
+                predicates.add(criteriaBuilder.equal(root.get("status"), filtros.getStatus()));
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }
