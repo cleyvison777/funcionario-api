@@ -4,6 +4,8 @@ import com.funcionario.domain.cargo.dto.CargoDto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class EmpregadoDto {
@@ -13,6 +15,10 @@ public class EmpregadoDto {
     private int idade;
     private String cpf;
     private double salario;
+    private Boolean status;
     private CargoDto cargo;
+    private LocalDateTime dataCadastro;
+    private LocalDateTime dataAtualizado;
+
 
 }

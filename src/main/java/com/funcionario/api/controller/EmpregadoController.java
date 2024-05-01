@@ -32,4 +32,10 @@ public class EmpregadoController {
     public Empregado adicionar(@RequestBody @Valid EmpregadoDtoForm empregadoDtoForm) {
         return empregadoService.salvarEmpregado(empregadoDtoForm);
     }
+
+    @DeleteMapping("/{empregadoId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void exclusaoLogica(@PathVariable Long empregadoId) {
+        empregadoService.exclusaoLogica(empregadoId);
+    }
 }
