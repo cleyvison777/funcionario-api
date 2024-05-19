@@ -22,6 +22,7 @@ public class EmpregadoDtoForm {
     private double salario;
     @NotNull
     private boolean status;
+    private EnderecoDtoForm endereco;
     @NotNull
     @Valid
     private CargoDtoForm cargo;

@@ -25,6 +25,8 @@ public class Empregado {
     private String cpf;
     private double salario;
     private Boolean status;
+    @Embedded
+    private Endereco endereco;
     @CreationTimestamp
     @Column(name = "DATA_CADASTRO", nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
