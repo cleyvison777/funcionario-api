@@ -19,6 +19,6 @@ public class EmpregadoDto {
     private CargoDto cargo;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizado;
-
+    private EnderecoDtoForm endereco;
 
 }
