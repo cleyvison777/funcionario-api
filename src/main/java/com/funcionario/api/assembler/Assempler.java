@@ -16,12 +16,8 @@ public class Assempler {
     }
 
     public void copyToDomainObject(EmpregadoDtoForm empregadoDtoForm, Empregado empregado) {
-        modelMapper.map(empregadoDtoForm, empregado);
-        if (empregadoDtoForm.getCargo() != null) {
-            Cargo cargo = new Cargo();
-            cargo.setId(empregadoDtoForm.getCargo().getId());
-            empregado.setCargo(cargo);
-        }
+            empregado.setCargo(new Cargo());
+            modelMapper.map(empregadoDtoForm, empregado);
     }
 }
 
