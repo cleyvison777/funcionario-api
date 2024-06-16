@@ -31,7 +31,9 @@ public class RelatorioService {
 
     public static final String JASPER_DIRETORIO = "relatorios";
     public static final String JASPER_PREFIX = "Blank_A4.jasper";
-
+    private static final String IMAGEM_PREFIXO = "logo-555x50.png";
+    private static final String IMAGE_DIRETORIO = "img";
+    Map<String, Object> params = new HashMap<>();
 
     public RelatorioService(ModelMapper modelMapper, EmpregadoService empregadoService) {
         this.modelMapper = modelMapper;
@@ -43,6 +45,9 @@ public class RelatorioService {
         List<RelatorioEmpregadoDto> relatorioEmpregadoDtos = gerarRelatorio(filtrosDto);
         List<Map<String, Object>> data = getMaps(relatorioEmpregadoDtos);
         String jasperPath = JASPER_DIRETORIO + SEPARADOR + JASPER_PREFIX;
+
+        params.put("IMAGEM_DIRETORIO", obterImagemRelatorio(IMAGE_DIRETORIO + SEPARADOR + IMAGEM_PREFIXO));
+
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
         JasperPrint jasperPrint = JasperFillManager.fillReport(this.obterPathArquivo(jasperPath), new HashMap<>(), dataSource);
 
@@ -70,6 +75,11 @@ public class RelatorioService {
     public InputStream obterPathArquivo(String path) {
         return getClass().getClassLoader().getResourceAsStream(path);
     }
+
+    private InputStream obterImagemRelatorio(String pathLogoSefa) {
+        return getClass().getClassLoader().getResourceAsStream(pathLogoSefa);
+    }
+
 
     List<RelatorioEmpregadoDto> gerarRelatorio(FiltrosDto filtrosDto) {
         try {
