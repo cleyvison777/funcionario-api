@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +41,30 @@ public class RelatorioService {
 
     public byte[] gerarRelatorioPDF(FiltrosDto filtrosDto) throws JRException {
         List<RelatorioEmpregadoDto> relatorioEmpregadoDtos = gerarRelatorio(filtrosDto);
+        List<Map<String, Object>> data = getMaps(relatorioEmpregadoDtos);
         String jasperPath = JASPER_DIRETORIO + SEPARADOR + JASPER_PREFIX;
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(relatorioEmpregadoDtos);
-        Map<String, Object> params = new HashMap<>();
-        JasperPrint jasperPrint = JasperFillManager.fillReport(this.obterPathArquivo(jasperPath), params, dataSource);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(this.obterPathArquivo(jasperPath), new HashMap<>(), dataSource);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
         return outputStream.toByteArray();
+    }
+
+    private static List<Map<String, Object>> getMaps(List<RelatorioEmpregadoDto> relatorioEmpregadoDtos) {
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (RelatorioEmpregadoDto dto : relatorioEmpregadoDtos) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", dto.getId());
+            map.put("nome", dto.getNome());
+            map.put("idade", dto.getIdade());
+            map.put("cpf", dto.getCpf());
+            map.put("salario", dto.getSalario());
+            map.put("cargo", dto.getCargo().getNome());
+
+            data.add(map);
+        }
+        return data;
     }
 
     public InputStream obterPathArquivo(String path) {
