@@ -11,16 +11,12 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
 import org.springframework.data.domain.Pageable;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZoneId;
+import java.util.*;
 
 
 @Service
@@ -45,7 +41,6 @@ public class RelatorioService {
         List<RelatorioEmpregadoDto> relatorioEmpregadoDtos = gerarRelatorio(filtrosDto);
         List<Map<String, Object>> data = getMaps(relatorioEmpregadoDtos);
         String jasperPath = JASPER_DIRETORIO + SEPARADOR + JASPER_PREFIX;
-
         params.put("IMAGEM_DIRETORIO", obterImagemRelatorio(IMAGE_DIRETORIO + SEPARADOR + IMAGEM_PREFIXO));
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(data);
@@ -58,17 +53,19 @@ public class RelatorioService {
 
     private static List<Map<String, Object>> getMaps(List<RelatorioEmpregadoDto> relatorioEmpregadoDtos) {
         List<Map<String, Object>> data = new ArrayList<>();
-        for (RelatorioEmpregadoDto dto : relatorioEmpregadoDtos) {
+        relatorioEmpregadoDtos.forEach(dto -> {
             Map<String, Object> map = new HashMap<>();
             map.put("id", dto.getId());
             map.put("nome", dto.getNome());
             map.put("idade", dto.getIdade());
             map.put("cpf", dto.getCpf());
             map.put("salario", dto.getSalario());
+            Date dataCadastroDate = Date.from(dto.getDataCadastro().atZone(ZoneId.systemDefault()).toInstant());
+            map.put("dataCadastro", dataCadastroDate);
             map.put("cargo", dto.getCargo().getNome());
-
             data.add(map);
-        }
+        });
+
         return data;
     }
 
@@ -76,8 +73,8 @@ public class RelatorioService {
         return getClass().getClassLoader().getResourceAsStream(path);
     }
 
-    private InputStream obterImagemRelatorio(String pathLogoSefa) {
-        return getClass().getClassLoader().getResourceAsStream(pathLogoSefa);
+    private InputStream obterImagemRelatorio(String pathLogoImagem) {
+        return getClass().getClassLoader().getResourceAsStream(pathLogoImagem);
     }
 
 
