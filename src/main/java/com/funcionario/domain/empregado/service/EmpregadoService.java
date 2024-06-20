@@ -27,6 +27,7 @@ public class EmpregadoService {
     private final ModelMapper modelMapper;
     private final CargoService cargoService;
     private final LocalidadesClient localidadesClient;
+
     public EmpregadoService(EmpregadoRepository empregadoRepository, ModelMapper modelMapper, CargoService cargoService, LocalidadesClient localidadesClient) {
         this.empregadoRepository = empregadoRepository;
         this.modelMapper = modelMapper;
@@ -61,4 +62,20 @@ public class EmpregadoService {
         Page<Empregado> empregados = empregadoRepository.findAll(specification, pageable);
         return empregados.map(empregado -> modelMapper.map(empregado, EmpregadoDto.class));
     }
+
+    public Empregado buscarPorId(Long empregadoId) {
+        return empregadoRepository.findById(empregadoId).orElseThrow(() -> new EmpregadoNaoEncontradoException(empregadoId));
+    }
+
+
+    public Empregado atualizarEmpregado(Empregado empregadoDtoForm) {
+        Empregado empregado = modelMapper.map(empregadoDtoForm, Empregado.class);
+        Long cargoId = empregadoDtoForm.getCargo().getId();
+        Cargo cargo = cargoService.buscarCargoPorId(cargoId);
+        LocalidadesDto clientEnderecoDto = localidadesClient.getEnderecoDto(empregadoDtoForm.getEndereco().getCep());
+        cadastrarLocalidade(empregado, clientEnderecoDto);
+        empregado.setCargo(cargo);
+        return empregadoRepository.save(empregado);
+    }
+
 }
