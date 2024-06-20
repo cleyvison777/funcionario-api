@@ -1,6 +1,7 @@
 package com.funcionario.domain.empregado.dto;
 
 import com.funcionario.domain.cargo.dto.CargoDtoForm;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +16,8 @@ public class EmpregadoDtoForm {
     @NotBlank
     private String nome;
     @NotNull
-    private int idade;
-    @NotNull
+    private Integer idade;
+    @NotBlank
     private String cpf;
     @PositiveOrZero
     private double salario;
@@ -26,5 +27,6 @@ public class EmpregadoDtoForm {
     @NotNull
     @Valid
     private CargoDtoForm cargo;
+
 
 }
